@@ -1,0 +1,28 @@
+name: Ejecutar Robot Viral
+
+on:
+  workflow_dispatch: # Esto permite que aparezca un botón para probarlo MANUALMENTE ahora
+  schedule:
+    - cron: '*/15 * * * *' # Esto lo ejecutará automáticamente cada 15 minutos
+
+jobs:
+  run-scraper:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Descargar código
+        uses: actions/checkout@v3
+
+      - name: Instalar Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Instalar librerías
+        run: pip install requests
+
+      - name: Correr el Robot
+        env: 
+          API_URL: ${{ secrets.API_URL }}
+          API_KEY: ${{ secrets.API_KEY }}
+        run: python robot.py
